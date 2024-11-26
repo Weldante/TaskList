@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvNama"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nama Task"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tvTanggal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tanggal Deadline"
+        android:layout_marginStart="12dp"/>
+
+    <TextView
+        android:id="@+id/tvDeskripsi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Deskripsi Task"
+        android:layout_marginStart="12dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnHapus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hapus"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="10dp"/>
+
+        <Button
+            android:id="@+id/btnEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="10dp"/>
+
+        <Button
+            android:id="@+id/btnSelesai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Selesai"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="10dp"/>
+
+        <TextView
+            android:id="@+id/tvSelesai"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Task sudah selesai"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
