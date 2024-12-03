@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:text="Hapus"
             android:layout_weight="1"
-            android:layout_marginHorizontal="10dp"/>
+            android:layout_marginEnd="4dp"/>
 
         <Button
             android:id="@+id/btnEdit"
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:text="Edit"
             android:layout_weight="1"
-            android:layout_marginHorizontal="10dp"/>
+            android:layout_marginEnd="4dp"/>
 
         <Button
             android:id="@+id/btnSelesai"
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:text="Selesai"
             android:layout_weight="1"
-            android:layout_marginHorizontal="10dp"/>
+            android:layout_marginEnd="4dp"/>
 
         <TextView
             android:id="@+id/tvSelesai"
@@ -60,7 +60,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Task sudah selesai"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"/>
+
+        <Button
+            android:id="@+id/btnFavorit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Favorit"/>
+
+        <Button
+            android:id="@+id/btnUnfavorit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:text="Favorit"/>
 
     </LinearLayout>
 

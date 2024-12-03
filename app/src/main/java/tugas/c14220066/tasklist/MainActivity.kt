@@ -1,6 +1,7 @@
 package tugas.c14220066.tasklist
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.widget.Button
@@ -11,13 +12,17 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var _nama : MutableList<String>
-    private lateinit var _tanggal : MutableList<String>
-    private lateinit var _deskripsi : MutableList<String>
-    private lateinit var _selesai : MutableList<Boolean>
+    private var _nama : MutableList<String> = emptyList<String>().toMutableList()
+    private var _tanggal : MutableList<String> = emptyList<String>().toMutableList()
+    private var _deskripsi : MutableList<String> = emptyList<String>().toMutableList()
+    private var _selesai : MutableList<Boolean> = emptyList<Boolean>().toMutableList()
+
+    lateinit var sp : SharedPreferences
 
     private var arTaskList = arrayListOf<Task>()
 
@@ -34,8 +39,24 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        sp = getSharedPreferences("dataSP", MODE_PRIVATE)
+//        val gson = Gson()
+//        val isiSP = sp.getString("spTask", null)
+//        val type = object : TypeToken<ArrayList<Task>>() {}.type
+//        if (isiSP != null) arTaskList = gson.fromJson(isiSP, type)
+
         _rvTaskList = findViewById<RecyclerView>(R.id.rvTaskList)
-        SiapkanData()
+//        if (arTaskList.size == 0) {
+//            SiapkanData()
+//        } else {
+//            arTaskList.forEach {
+//                _nama.add(it.nama)
+//                _tanggal.add(it.tanggal)
+//                _deskripsi.add(it.deskripsi)
+//                _selesai.add(it.selesai)
+//            }
+//            arTaskList.clear()
+//        }
         TambahData()
         TampilkanData()
 
@@ -77,6 +98,10 @@ class MainActivity : AppCompatActivity() {
 
     fun TambahData() {
         arTaskList.clear()
+        val gson = Gson()
+        val isiSP = sp.getString("spTask", null)
+        val type = object : TypeToken<ArrayList<Task>>() {}.type
+        if (isiSP != null) arTaskList = gson.fromJson(isiSP, type)
         for (position in _nama.indices) {
             val data = Task(
                 _nama[position],
@@ -86,6 +111,7 @@ class MainActivity : AppCompatActivity() {
             )
             arTaskList.add(data)
         }
+
     }
 
     fun TampilkanData() {
@@ -112,6 +138,38 @@ class MainActivity : AppCompatActivity() {
 
             override fun taskSelesai(position: Int) {
                 _selesai.set(position, true)
+                TambahData()
+                TampilkanData()
+            }
+
+            override fun favorit(position: Int) {
+                val gson = Gson()
+                val isiSP = sp.getString("spTask", null)
+                val type = object : TypeToken<ArrayList<Task>>() {}.type
+                if (isiSP != null) {
+                    var newTaskList = gson.fromJson<ArrayList<Task>>(isiSP, type)
+                    newTaskList.add(arTaskList[position])
+                    val editor = sp.edit()
+                    val json = gson.toJson(newTaskList)
+                    editor.putString("spTask", json)
+                    editor.apply()
+                }
+                TambahData()
+                TampilkanData()
+            }
+
+            override fun unFavorit(position: Int) {
+                val gson = Gson()
+                val isiSP = sp.getString("spTask", null)
+                val type = object : TypeToken<ArrayList<Task>>() {}.type
+                if (isiSP != null) {
+                    var newTaskList = gson.fromJson<ArrayList<Task>>(isiSP, type)
+                    newTaskList.remove(arTaskList[position])
+                    val editor = sp.edit()
+                    val json = gson.toJson(newTaskList)
+                    editor.putString("spTask", json)
+                    editor.apply()
+                }
                 TambahData()
                 TampilkanData()
             }

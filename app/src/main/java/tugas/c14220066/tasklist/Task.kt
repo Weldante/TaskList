@@ -7,6 +7,6 @@ import kotlinx.parcelize.Parcelize
 data class Task (
     var nama: String,
     var tanggal: String,
-    val deskripsi: String,
-    val selesai: Boolean
+    var deskripsi: String,
+    var selesai: Boolean
 ) : Parcelable

@@ -17,6 +17,8 @@ class AdapterRecView (private val listTask: ArrayList<Task>) : RecyclerView.
         fun delData(position: Int)
         fun editData(data: Task, position: Int)
         fun taskSelesai(position: Int)
+        fun favorit(position: Int)
+        fun unFavorit(position: Int)
 
     }
 
@@ -32,6 +34,8 @@ class AdapterRecView (private val listTask: ArrayList<Task>) : RecyclerView.
             var _btnEdit = itemView.findViewById<Button>(R.id.btnEdit)
             var _btnSelesai = itemView.findViewById<Button>(R.id.btnSelesai)
             var _tvSelesai = itemView.findViewById<TextView>(R.id.tvSelesai)
+            var _btnFavorit = itemView.findViewById<Button>(R.id.btnFavorit)
+            var _btnUnfavorit = itemView.findViewById<Button>(R.id.btnUnfavorit)
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
@@ -61,6 +65,18 @@ class AdapterRecView (private val listTask: ArrayList<Task>) : RecyclerView.
 
         holder._btnSelesai.setOnClickListener {
             onItemClickCallback.taskSelesai(position)
+        }
+
+        holder._btnFavorit.setOnClickListener {
+            holder._btnFavorit.visibility = View.GONE
+            holder._btnUnfavorit.visibility = View.VISIBLE
+            onItemClickCallback.favorit(position)
+        }
+
+        holder._btnUnfavorit.setOnClickListener {
+            holder._btnFavorit.visibility = View.VISIBLE
+            holder._btnUnfavorit.visibility = View.GONE
+            onItemClickCallback.unFavorit(position)
         }
 
         if (task.selesai) {
