@@ -38,7 +38,7 @@ class Simpan : AppCompatActivity() {
 
             _btnSimpan.setOnClickListener {
                 val data = Task(_etNama.text.toString(), _etTanggal.text.toString(),
-                    _etDeskripsi.text.toString(), false)
+                    _etDeskripsi.text.toString(), false, false)
                 val intent = Intent(this@Simpan, MainActivity::class.java)
                 intent.putExtra("DataTask", data)
                 intent.putExtra("Position", position)
@@ -49,7 +49,7 @@ class Simpan : AppCompatActivity() {
         else {
             _btnSimpan.setOnClickListener {
                 val data = Task(_etNama.text.toString(), _etTanggal.text.toString(),
-                    _etDeskripsi.text.toString(), false)
+                    _etDeskripsi.text.toString(), false, false)
                 val intent = Intent(this@Simpan, MainActivity::class.java)
                 intent.putExtra("DataTask", data)
                 startActivity(intent)

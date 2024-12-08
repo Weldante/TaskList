@@ -68,23 +68,35 @@ class AdapterRecView (private val listTask: ArrayList<Task>) : RecyclerView.
         }
 
         holder._btnFavorit.setOnClickListener {
-            holder._btnFavorit.visibility = View.GONE
-            holder._btnUnfavorit.visibility = View.VISIBLE
             onItemClickCallback.favorit(position)
         }
 
         holder._btnUnfavorit.setOnClickListener {
-            holder._btnFavorit.visibility = View.VISIBLE
-            holder._btnUnfavorit.visibility = View.GONE
             onItemClickCallback.unFavorit(position)
         }
 
-        if (task.selesai) {
+        if(task.favorit) {
             holder._btnHapus.visibility = View.GONE
+            holder._btnFavorit.visibility = View.GONE
+            holder._btnUnfavorit.visibility = View.VISIBLE
+            holder._btnEdit.visibility = View.GONE
+            holder._btnSelesai.visibility = View.GONE
+        } else {
+            holder._btnHapus.visibility = View.VISIBLE
+            holder._btnFavorit.visibility = View.VISIBLE
+            holder._btnUnfavorit.visibility = View.GONE
+            holder._btnEdit.visibility = View.VISIBLE
+            holder._btnSelesai.visibility = View.VISIBLE
+
+        }
+
+        if (task.selesai) {
             holder._btnEdit.visibility = View.GONE
             holder._btnSelesai.visibility = View.GONE
             holder._tvSelesai.visibility = View.VISIBLE
         }
+
+
 
     }
 

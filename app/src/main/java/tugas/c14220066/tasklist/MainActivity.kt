@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,8 +22,10 @@ class MainActivity : AppCompatActivity() {
     private var _tanggal : MutableList<String> = emptyList<String>().toMutableList()
     private var _deskripsi : MutableList<String> = emptyList<String>().toMutableList()
     private var _selesai : MutableList<Boolean> = emptyList<Boolean>().toMutableList()
+    private var _favorit : MutableList<Boolean> = emptyList<Boolean>().toMutableList()
 
     lateinit var sp : SharedPreferences
+    var jumlahFavorit : Int = 0
 
     private var arTaskList = arrayListOf<Task>()
 
@@ -40,6 +43,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         sp = getSharedPreferences("dataSP", MODE_PRIVATE)
+//        val gsonInit = Gson()
+//        val editorInit = sp.edit()
+//        arTaskList.add(Task("Test", "12345", "testing", false, true))
+//        val jsonInit = gsonInit.toJson(arTaskList)
+//        editorInit.putString("spTask", jsonInit)
+//        editorInit.apply()
 //        val gson = Gson()
 //        val isiSP = sp.getString("spTask", null)
 //        val type = object : TypeToken<ArrayList<Task>>() {}.type
@@ -74,6 +83,7 @@ class MainActivity : AppCompatActivity() {
                 _tanggal.set(position, dataTask.tanggal)
                 _deskripsi.set(position, dataTask.deskripsi)
                 _selesai.set(position, dataTask.selesai)
+                _favorit.set(position, dataTask.favorit)
                 TambahData()
                 TampilkanData()
             }
@@ -82,6 +92,7 @@ class MainActivity : AppCompatActivity() {
                 _tanggal.add(dataTask.tanggal)
                 _deskripsi.add(dataTask.deskripsi)
                 _selesai.add(dataTask.selesai)
+                _favorit.add(dataTask.favorit)
                 TambahData()
                 TampilkanData()
             }
@@ -102,12 +113,17 @@ class MainActivity : AppCompatActivity() {
         val isiSP = sp.getString("spTask", null)
         val type = object : TypeToken<ArrayList<Task>>() {}.type
         if (isiSP != null) arTaskList = gson.fromJson(isiSP, type)
+        jumlahFavorit = arTaskList.size
+//        val isiJumlah = sp.getString("jumlah", null)
+//        val jumlahType = object : TypeToken<Int>() {}.type
+//        if (isiJumlah != null) jumlahFavorit = gson.fromJson<Int>(isiJumlah, jumlahType).toString().toInt()
         for (position in _nama.indices) {
             val data = Task(
                 _nama[position],
                 _tanggal[position],
                 _deskripsi[position],
-                _selesai[position]
+                _selesai[position],
+                _favorit[position]
             )
             arTaskList.add(data)
         }
@@ -121,15 +137,18 @@ class MainActivity : AppCompatActivity() {
 
         adapterTaskList.setOnItemClickCallback(object : AdapterRecView.OnItemClickCallback{
             override fun delData(position: Int) {
+                val position = position - jumlahFavorit
                 _nama.removeAt(position)
                 _tanggal.removeAt(position)
                 _deskripsi.removeAt(position)
                 _selesai.removeAt(position)
+                _favorit.removeAt(position)
                 TambahData()
                 TampilkanData()
             }
 
             override fun editData(data: Task, position: Int) {
+                val position = position - jumlahFavorit
                 val intent = Intent(this@MainActivity, Simpan::class.java)
                 intent.putExtra("DataTask", data)
                 intent.putExtra("Position", position)
@@ -137,12 +156,14 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun taskSelesai(position: Int) {
+                val position = position - jumlahFavorit
                 _selesai.set(position, true)
                 TambahData()
                 TampilkanData()
             }
 
             override fun favorit(position: Int) {
+                arTaskList[position].favorit = true
                 val gson = Gson()
                 val isiSP = sp.getString("spTask", null)
                 val type = object : TypeToken<ArrayList<Task>>() {}.type
@@ -152,12 +173,14 @@ class MainActivity : AppCompatActivity() {
                     val editor = sp.edit()
                     val json = gson.toJson(newTaskList)
                     editor.putString("spTask", json)
+                    editor.putString("jumlah", json)
                     editor.apply()
                 }
                 TambahData()
                 TampilkanData()
             }
 
+            @RequiresApi(35)
             override fun unFavorit(position: Int) {
                 val gson = Gson()
                 val isiSP = sp.getString("spTask", null)
@@ -170,6 +193,11 @@ class MainActivity : AppCompatActivity() {
                     editor.putString("spTask", json)
                     editor.apply()
                 }
+                _nama.addFirst(arTaskList[position].nama)
+                _tanggal.addFirst(arTaskList[position].tanggal)
+                _deskripsi.addFirst(arTaskList[position].deskripsi)
+                _selesai.addFirst(arTaskList[position].selesai)
+                _favorit.addFirst(false)
                 TambahData()
                 TampilkanData()
             }
