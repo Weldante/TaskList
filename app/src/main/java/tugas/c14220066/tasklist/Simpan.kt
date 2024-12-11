@@ -43,7 +43,6 @@ class Simpan : AppCompatActivity() {
                 intent.putExtra("DataTask", data)
                 intent.putExtra("Position", position)
                 startActivity(intent)
-
             }
         }
         else {
